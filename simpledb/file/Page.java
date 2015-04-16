@@ -1,8 +1,10 @@
 package simpledb.file;
 
 import simpledb.server.SimpleDB;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Date;
 
 /**
  * The contents of a disk block in memory.
@@ -155,5 +157,33 @@ public class Page {
       byte[] byteval = val.getBytes();
       contents.putInt(byteval.length);
       contents.put(byteval);
+   }
+   public synchronized short getShort(int offset){
+	return 0;
+	   
+   }
+   public synchronized void setShort(int offset, short val){
+	   
+   }
+   public synchronized boolean getBoolean(int offset){
+	return false;
+	   
+   }
+   public synchronized void setBoolean(int offset, boolean val){
+	   
+   }
+   public synchronized byte[] getBytes(int offset){
+	return null;
+	   
+   }
+   public synchronized void setBytes(int offset, byte[] val){
+	   
+   }
+   public synchronized Date getDate(int offset){
+	return null;
+	   
+   }
+   public synchronized void setDate(int offset, Date val){
+	   
    }
 }
