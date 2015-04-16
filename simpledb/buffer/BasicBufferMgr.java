@@ -58,6 +58,7 @@ class BasicBufferMgr {
          if (buff == null)
             return null;
          buff.assignToBlock(blk);
+         bufferPoolMap.put(blk, buff);
       }
       if (!buff.isPinned())
          numAvailable--;
@@ -78,7 +79,9 @@ class BasicBufferMgr {
       Buffer buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
+      bufferPoolMap.del(buff.block());
       buff.assignToNew(filename, fmtr);
+      bufferPoolMap.put(buff.block(), buff);
       numAvailable--;
       buff.pin();
       return buff;
@@ -102,14 +105,18 @@ class BasicBufferMgr {
       return numAvailable;
    }
    
-   private Buffer findExistingBuffer(Block blk) {
-      for (Buffer buff : bufferpool) {
-         Block b = buff.block();
-         if (b != null && b.equals(blk))
-            return buff;
-      }
-      return null;
-   }
+	private Buffer findExistingBuffer(Block blk) {
+		// for (Buffer buff : bufferpool) {
+		// Block b = buff.block();
+		// if (b != null && b.equals(blk))
+		// return buff;
+		// }
+		// return null;
+		if (!containsMapping(blk)) {
+			return null;
+		} else
+			return getMapping(blk);
+	}
    
    private Buffer chooseUnpinnedBuffer() {
       for (Buffer buff : bufferpool)
@@ -134,3 +141,4 @@ class BasicBufferMgr {
 	   return bufferPoolMap.get(blk);
    }
 }
+
