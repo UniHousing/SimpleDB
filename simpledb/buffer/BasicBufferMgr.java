@@ -28,6 +28,7 @@ class BasicBufferMgr {
    BasicBufferMgr(int numbuffs) {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
+      bufferPoolMap=new BufferPoolMap();
       for (int i=0; i<numbuffs; i++)
          bufferpool[i] = new Buffer();
    }
@@ -92,7 +93,7 @@ class BasicBufferMgr {
     * @param buff the buffer to be unpinned
     */
    synchronized void unpin(Buffer buff) {
-//	  bufferPoolMap.del(buff.block());
+	  bufferPoolMap.del(buff.block());
       buff.unpin();
       if (!buff.isPinned())
          numAvailable++;
