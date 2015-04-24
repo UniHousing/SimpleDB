@@ -4,6 +4,8 @@ import simpledb.server.SimpleDB;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -159,31 +161,81 @@ public class Page {
       contents.put(byteval);
    }
    public synchronized short getShort(int offset){
-	return 0;
+	   contents.position(offset);
+	   return contents.getShort();
 	   
    }
    public synchronized void setShort(int offset, short val){
-	   
+	   contents.position(offset);
+	   contents.putShort(val);
    }
    public synchronized boolean getBoolean(int offset){
-	return false;
-	   
+	   contents.position(offset);
+	   char boolchar=contents.getChar();
+	   if(boolchar==0)
+		   return false;
+	   else 
+		   return true;
    }
    public synchronized void setBoolean(int offset, boolean val){
-	   
+	   contents.position(offset);
+	   char charval;
+	   if(val==true)
+		   charval=1;
+	   else 
+		   charval=0;
+	   contents.putChar(charval);
+	      
    }
+   
    public synchronized byte[] getBytes(int offset){
-	return null;
+	      contents.position(offset);
+	      int len = contents.getInt();
+	      byte[] byteval = new byte[len];
+	      contents.get(byteval);
+	      return  byteval;
 	   
    }
+   
    public synchronized void setBytes(int offset, byte[] val){
-	   
+	   contents.position(offset);
+	   contents.putInt(val.length);
+	   contents.put(val);   
    }
+   
    public synchronized Date getDate(int offset){
-	return null;
+	   //http://stackoverflow.com/questions/4772425/format-date-in-java
+	   String expectedPattern = "yyyy-MM-dd";
+	   SimpleDateFormat formatter = new SimpleDateFormat(expectedPattern);
+	   
+	   // (2) give the formatter a String that matches the SimpleDateFormat pattern
+	   String userInput = this.getString(offset);
+	   try{
+	   Date date = formatter.parse(userInput);
+	   return date;
+	   }
+	   catch(ParseException e)
+	   {
+		   Date date=null;
+		   return date;
+	   }
+	 
+	      // (3) prints out "Tue Sep 22 00:00:00 EDT 2009"
+	      //System.out.println(date);
+	    
+	
+	
+	  
 	   
    }
    public synchronized void setDate(int offset, Date val){
-	   
+	   SimpleDateFormat targetDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	   String valstr=targetDateFormat.format(val);//date.toString();
+
+	  
+	   contents.position(offset);
+	   byte[] byteval = valstr.getBytes();
+	   contents.putInt(byteval.length);
+	   contents.put(byteval);
    }
 }
