@@ -10,7 +10,7 @@ import simpledb.file.*;
 class BasicBufferMgr {
    private Buffer[] bufferpool;
    private int numAvailable;
-   private BufferPoolMap bufferPoolMap;
+   private BufferPoolMap bufferPoolMap;//define a private variable
    
    /**
     * Creates a buffer manager having the specified number 
@@ -28,7 +28,7 @@ class BasicBufferMgr {
    BasicBufferMgr(int numbuffs) {
       bufferpool = new Buffer[numbuffs];
       numAvailable = numbuffs;
-      bufferPoolMap=new BufferPoolMap();
+      bufferPoolMap=new BufferPoolMap();//initialize
       for (int i=0; i<numbuffs; i++)
          bufferpool[i] = new Buffer();
    }
@@ -59,7 +59,7 @@ class BasicBufferMgr {
          if (buff == null)
             return null;
          buff.assignToBlock(blk);
-         bufferPoolMap.put(blk, buff);
+         bufferPoolMap.put(blk, buff);//create a new mapping
       }
       if (!buff.isPinned())
          numAvailable--;
@@ -80,9 +80,8 @@ class BasicBufferMgr {
       Buffer buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
-    // bufferPoolMap.del(buff.block());
       buff.assignToNew(filename, fmtr);
-      bufferPoolMap.put(buff.block(), buff);
+      bufferPoolMap.put(buff.block(), buff);//create mapping entry
       numAvailable--;
       buff.pin();
       return buff;
@@ -97,7 +96,7 @@ class BasicBufferMgr {
       buff.unpin();
       if (!buff.isPinned()){
     	  numAvailable++;  
-    	  bufferPoolMap.del(buff.block());
+    	  bufferPoolMap.del(buff.block());//delete mapping entry
       }
         
    }
@@ -117,7 +116,7 @@ class BasicBufferMgr {
 		// return buff;
 		// }
 		// return null;
-		if (!containsMapping(blk)) {
+		if (!containsMapping(blk)) {//use map to search instead of linear search
 			return null;
 		} else
 			return getMapping(blk);
