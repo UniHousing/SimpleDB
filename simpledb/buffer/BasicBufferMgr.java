@@ -80,7 +80,7 @@ class BasicBufferMgr {
       Buffer buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
-   //   bufferPoolMap.del(buff.block());
+    // bufferPoolMap.del(buff.block());
       buff.assignToNew(filename, fmtr);
       bufferPoolMap.put(buff.block(), buff);
       numAvailable--;
