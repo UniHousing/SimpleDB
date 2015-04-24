@@ -204,38 +204,17 @@ public class Page {
    }
    
    public synchronized Date getDate(int offset){
-	   //http://stackoverflow.com/questions/4772425/format-date-in-java
-	   String expectedPattern = "yyyy-MM-dd";
-	   SimpleDateFormat formatter = new SimpleDateFormat(expectedPattern);
-	   
-	   // (2) give the formatter a String that matches the SimpleDateFormat pattern
-	   String userInput = this.getString(offset);
-	   try{
-	   Date date = formatter.parse(userInput);
-	   return date;
-	   }
-	   catch(ParseException e)
-	   {
-		   Date date=null;
-		   return date;
-	   }
-	 
-	      // (3) prints out "Tue Sep 22 00:00:00 EDT 2009"
-	      //System.out.println(date);
-	    
-	
-	
-	  
-	   
-   }
-   public synchronized void setDate(int offset, Date val){
-	   SimpleDateFormat targetDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	   String valstr=targetDateFormat.format(val);//date.toString();
-
-	  
 	   contents.position(offset);
-	   byte[] byteval = valstr.getBytes();
-	   contents.putInt(byteval.length);
-	   contents.put(byteval);
+	   Long datelong=contents.getLong();
+	   Date date=new Date(datelong);
+	   return date;
    }
+   
+   public synchronized void setDate(int offset, Date val){
+	   
+	   contents.position(offset);
+	   Long datelong = val.getTime();
+	   contents.putLong(offset,datelong);
+   }
+   
 }
