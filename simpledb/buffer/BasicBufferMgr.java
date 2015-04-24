@@ -10,7 +10,6 @@ import simpledb.file.*;
 class BasicBufferMgr {
    private Buffer[] bufferpool;
    private int numAvailable;
-   private BufferPoolMap bufferPoolMap;
    
    /**
     * Creates a buffer manager having the specified number 
@@ -116,21 +115,5 @@ class BasicBufferMgr {
          if (!buff.isPinned())
          return buff;
       return null;
-   }
-   /**
-   * Determines whether the map has a mapping from
-   * the block to some buffer.
-   * @param blk the block to use as a key
-   * @return true if there is a mapping; false otherwise
-   */
-   boolean containsMapping(Block blk) {
-	   return bufferPoolMap.containsKey(blk);
-   }
-   /**
-   * Returns the buffer that the map maps the specified block to.
-   * @param blk the block to use as a key
-   * @return the buffer mapped to if there is a mapping; null otherwise */
-   Buffer getMapping(Block blk) {
-	   return bufferPoolMap.get(blk);
    }
 }
