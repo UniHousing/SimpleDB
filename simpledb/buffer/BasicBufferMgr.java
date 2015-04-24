@@ -93,10 +93,13 @@ class BasicBufferMgr {
     * @param buff the buffer to be unpinned
     */
    synchronized void unpin(Buffer buff) {
-	  bufferPoolMap.del(buff.block());
+	  
       buff.unpin();
-      if (!buff.isPinned())
-         numAvailable++;
+      if (!buff.isPinned()){
+    	  numAvailable++;  
+    	  bufferPoolMap.del(buff.block());
+      }
+        
    }
    
    /**
