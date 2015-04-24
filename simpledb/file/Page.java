@@ -232,6 +232,7 @@ public class Page {
 	   SimpleDateFormat targetDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	   String valstr=targetDateFormat.format(val);//date.toString();
 
+	  
 	   contents.position(offset);
 	   byte[] byteval = valstr.getBytes();
 	   contents.putInt(byteval.length);
