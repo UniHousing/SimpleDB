@@ -5,7 +5,7 @@ import java.util.HashMap;
 import simpledb.file.Block;
 
 public class BufferPoolMap{
-	HashMap<Block, Buffer> map= new HashMap<Block, Buffer>();
+	HashMap<Block, Buffer> map= new HashMap<Block, Buffer>();//Use a delegation to maintain a hashmap
 
 	public boolean containsKey(Block blk) {//check whether map has an entry for specific block
 		// TODO Auto-generated method stub
